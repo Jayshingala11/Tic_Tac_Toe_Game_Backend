@@ -118,11 +118,11 @@ class GameRoomController {
     /**
      * Handle join room
      */
-    socket.on("join-room", async ({ roomId, playerId }) => {
+    socket.on("join-room", async ({ roomId }) => {
       try {
-        // console.log("User :::", socket.user);
+        console.log("User :::", socket.user);
+        const playerId = socket.user.id;
 
-        // const playerId = socket.user.id;
         console.log(
           "🚀 ~ GameRoomController ~ socket.on ~ playerId:",
           playerId
@@ -174,9 +174,9 @@ class GameRoomController {
     /**
      * Handle player move
      */
-    socket.on("player-move", async ({ gameId, playerId, move }) => {
+    socket.on("player-move", async ({ gameId, move }) => {
       try {
-        // const playerId = socket.user.id;
+        const playerId = socket.user.id;
         console.log(gameId, playerId, move);
 
         const game = await Game.findByPk(gameId);
@@ -285,7 +285,7 @@ class GameRoomController {
   async listTopTenPlayers(req, res) {
     try {
       const topTenUsers = await User.findAll({
-        attributes: ["id", "username", "wins", "losses"],
+        attributes: ["id", "name", "wins", "losses"],
         order: [["wins", "DESC"]],
         limit: 10,
       });
